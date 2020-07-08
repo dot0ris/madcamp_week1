@@ -8,7 +8,8 @@ import com.example.madcamp_week1.R
 
 private val TAB_TITLES = arrayOf(
         R.string.tab_text_1,
-        R.string.tab_text_2
+        R.string.tab_text_2,
+        R.string.tab_text_3
 )
 
 /**
@@ -18,10 +19,18 @@ private val TAB_TITLES = arrayOf(
 class SectionsPagerAdapter(private val context: Context, fm: FragmentManager)
     : FragmentPagerAdapter(fm) {
 
+
+
     override fun getItem(position: Int): Fragment {
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
-        return PlaceholderFragment.newInstance(position + 1)
+        // return PlaceholderFragment.newInstance(position + 1)
+        return when(position) {
+            0 -> ContactFragment()
+            1 -> GalleryFragment()
+            2 -> ThirdFragment()
+            else -> Fragment()
+        }
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
@@ -29,7 +38,7 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager)
     }
 
     override fun getCount(): Int {
-        // Show 2 total pages.
-        return 2
+        // Show 3 total pages.
+        return 3
     }
 }
