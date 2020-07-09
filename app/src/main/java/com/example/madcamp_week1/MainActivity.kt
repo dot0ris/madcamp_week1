@@ -22,6 +22,8 @@ class MainActivity : AppCompatActivity() {
         tabs.setupWithViewPager(viewPager)
         val fab: FloatingActionButton = findViewById(R.id.fab)
 
+        var contactLists = arrayListof<Contact>()
+
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
