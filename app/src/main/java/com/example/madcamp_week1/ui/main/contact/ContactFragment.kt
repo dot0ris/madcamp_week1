@@ -56,10 +56,13 @@ class ContactFragment : Fragment() {
         }
     }
 <<<<<<< Updated upstream:app/src/main/java/com/example/madcamp_week1/ui/main/contact/ContactFragment.kt
+<<<<<<< Updated upstream:app/src/main/java/com/example/madcamp_week1/ui/main/contact/ContactFragment.kt
 <<<<<<< Updated upstream
 >>>>>>> Stashed changes:app/src/main/java/com/example/madcamp_week1/ui/main/contact/ContactFragment.kt
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes:app/src/main/java/com/example/madcamp_week1/ui/main/ContactFragment.kt
 =======
 >>>>>>> Stashed changes:app/src/main/java/com/example/madcamp_week1/ui/main/ContactFragment.kt
 }
