@@ -1,7 +1,5 @@
 package com.example.madcamp_week1
 
-import android.content.Context
-import android.content.res.AssetManager
 import android.os.Bundle
 import android.util.Log
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -10,7 +8,6 @@ import com.google.android.material.tabs.TabLayout
 import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
-import android.view.MenuItem
 import com.example.madcamp_week1.ui.main.SectionsPagerAdapter
 import java.io.File
 import java.io.FileNotFoundException
@@ -63,9 +60,23 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        val ab = supportActionBar!!
+        ab.setDisplayShowTitleEnabled(false)
+
         val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
         val viewPager: ViewPager = findViewById(R.id.view_pager)
         viewPager.adapter = sectionsPagerAdapter
+        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+            override fun onPageScrollStateChanged(state: Int) {}
+            override fun onPageSelected(position: Int) {}
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                invalidateOptionsMenu()
+            }
+        })
+
         val tabs: TabLayout = findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
         val fab: FloatingActionButton = findViewById(R.id.fab)
@@ -76,5 +87,30 @@ class MainActivity : AppCompatActivity() {
         }
 
         writeImagesToStorage()
+    }
+
+    // Adjust visibility of each options in menu_main
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        when(findViewById<ViewPager>(R.id.view_pager).currentItem){
+            0 -> {
+                menu!!.setGroupVisible(R.id.menu_group_contact, true)
+                menu!!.setGroupVisible(R.id.menu_group_gallery, false)
+                menu!!.setGroupVisible(R.id.menu_group_tab3, false)
+
+            }
+            1 -> {
+                menu!!.setGroupVisible(R.id.menu_group_contact, false)
+                menu!!.setGroupVisible(R.id.menu_group_gallery, true)
+                menu!!.setGroupVisible(R.id.menu_group_tab3, false)
+            }
+            2 -> {
+                menu!!.setGroupVisible(R.id.menu_group_contact, false)
+                menu!!.setGroupVisible(R.id.menu_group_gallery, false)
+                menu!!.setGroupVisible(R.id.menu_group_tab3, true)
+            }
+        }
+
+        return super.onCreateOptionsMenu(menu)
     }
 }

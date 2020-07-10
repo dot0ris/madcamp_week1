@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_settings"
+        android:title="환경설정"
+        android:icon="@drawable/ic_baseline_settings_24"
+        app:showAsAction="ifRoom"/>
+
+    <group android:id="@+id/menu_group_contact"
+        android:visible="false">
+        <item
+            android:id="@+id/action_contact1"
+            android:title="연락처1"
+            app:showAsAction="never"/>
+
+        <item
+            android:id="@+id/action_contact2"
+            android:title="연락처2"
+            app:showAsAction="never"/>
+    </group>
+
+    <group android:id="@+id/menu_group_gallery"
+        android:visible="false">
+        <item
+            android:id="@+id/action_gallery1"
+            android:title="갤러리1"
+            app:showAsAction="never"/>
+
+        <item
+            android:id="@+id/action_gallery2"
+            android:title="갤러리2"
+            app:showAsAction="never"/>
+    </group>
+
+    <group android:id="@+id/menu_group_tab3"
+        android:visible="false">
+        <item
+            android:id="@+id/action_option1"
+            android:title="옵션1"
+            app:showAsAction="never"/>
+
+        <item
+            android:id="@+id/action_option2"
+            android:title="옵션2"
+            app:showAsAction="never"/>
+    </group>
+
+</menu>
