@@ -8,15 +8,14 @@ import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.AdapterView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.madcamp_week1.R
+import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -49,6 +48,7 @@ class GalleryFragment : Fragment(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         assets = mutableListOf<String>()
         for(i in 1..22){
             assets.add("images/image${i.toString().padStart(2, '0')}.jpg")
@@ -67,6 +67,14 @@ class GalleryFragment : Fragment(){
         return view
     }
 
-
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.action_gallery1 -> Snackbar.make(view!!, "Gallery Option 1", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+            R.id.action_gallery2 -> Snackbar.make(view!!, "Gallery Option 2", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
 }
