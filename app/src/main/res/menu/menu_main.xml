@@ -6,10 +6,10 @@
         android:id="@+id/action_settings"
         android:title="환경설정"
         android:icon="@drawable/ic_baseline_settings_24"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
 
     <group android:id="@+id/menu_group_contact"
-        android:visible="false">
+        android:visible="true">
         <item
             android:id="@+id/action_contact1"
             android:title="연락처1"
@@ -35,7 +35,7 @@
     </group>
 
     <group android:id="@+id/menu_group_tab3"
-        android:visible="false">
+        android:visible="true">
         <item
             android:id="@+id/action_option1"
             android:title="옵션1"
