@@ -22,10 +22,10 @@
     </group>
 
     <group android:id="@+id/menu_group_gallery"
-        android:visible="false">
+        android:visible="true">
         <item
             android:id="@+id/action_gallery1"
-            android:title="갤러리1"
+            android:title="행 개수"
             app:showAsAction="never"/>
 
         <item
