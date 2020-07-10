@@ -5,14 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="0dp"
     tools:context=".MainActivity">
     
     <ImageView
         android:id="@+id/id_image"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="1:1"
         android:adjustViewBounds="true"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

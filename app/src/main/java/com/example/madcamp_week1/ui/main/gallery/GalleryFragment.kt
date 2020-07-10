@@ -154,11 +154,11 @@ class GalleryFragment : Fragment(), NumberPicker.OnValueChangeListener{
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if(currentPhotoPath != null){
-            img_paths.add(0, currentPhotoPath!!)
-            adapter.notifyItemInserted(0)
+            img_paths.add(currentPhotoPath!!)
+            adapter.notifyItemInserted(img_paths.size-1)
         }
     }
 }
