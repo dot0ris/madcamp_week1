@@ -84,4 +84,9 @@ class MainActivity : AppCompatActivity() {
 
         writeImagesToStorage()
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_gallery, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
 }
