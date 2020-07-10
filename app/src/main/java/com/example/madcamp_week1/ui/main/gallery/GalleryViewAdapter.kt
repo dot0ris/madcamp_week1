@@ -23,7 +23,7 @@ class GalleryViewAdapter(private val context : Context, private val imageList: L
         fun bind(img_path : String){
             Glide.with(context)
                 .load(Uri.parse("file:///android_asset/${img_path}"))
-                .override(400, 300)
+                .override(300, 200)
                 .placeholder(R.drawable.image_load)
                 .into(imageView)
         }
