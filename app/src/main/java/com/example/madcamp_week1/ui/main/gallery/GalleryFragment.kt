@@ -64,7 +64,7 @@ class GalleryFragment : Fragment(), NumberPicker.OnValueChangeListener{
         setHasOptionsMenu(true)
         img_paths = mutableListOf<String>()
 
-        val imgDir = File(context!!.filesDir, "gallery")
+        val imgDir = context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
         imgDir.list()?.forEach{
             img_paths.add(imgDir.toString() + File.separator + it)
             Log.d("ImgPath", img_paths[img_paths.size-1])

@@ -2,6 +2,7 @@ package com.example.madcamp_week1
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -29,15 +30,11 @@ class MainActivity : AppCompatActivity() {
         val images = assetManager.list("gallery")
         if (images != null) {
             //Log.d("Gallery", "${imagePaths.get(1)}")
-            val dir = File(filesDir, "gallery")
-            dir.mkdirs()
+            val dir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
             for(image in images){
                 //Log.d("Gallery", "$image")
                 try{
                     val srcFile = "gallery" + File.separator +"$image"
-                    val destFile = filesDir.toString() + File.separator + srcFile
-                    Log.d("Gallery", srcFile)
-                    Log.d("Gallery", destFile)
                     val input = assetManager.open(srcFile)
                     val output = FileOutputStream(File(dir, image))
                     input.copyTo(output)
