@@ -3,17 +3,22 @@ package com.example.madcamp_week1.ui.main.gallery
 import android.app.Dialog
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.view.*
 import android.widget.AdapterView
 import android.widget.Button
 import android.widget.NumberPicker
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +28,8 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
+import java.lang.Exception
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -31,6 +38,9 @@ class GalleryFragment : Fragment(), NumberPicker.OnValueChangeListener{
     private lateinit var adapter : GalleryViewAdapter
     private lateinit var img_paths : MutableList<String>
     private var cnt = 1
+    private var currentPhotoPath : String? = null
+
+    val REQUEST_IMAGE_CAPTURE = 1
 
     /*
     private fun saveImage(drawableId : Int) : String {
@@ -60,6 +70,7 @@ class GalleryFragment : Fragment(), NumberPicker.OnValueChangeListener{
             Log.d("ImgPath", img_paths[img_paths.size-1])
         }
 
+        adapter = GalleryViewAdapter(context!!, mutableListOf())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -75,8 +86,7 @@ class GalleryFragment : Fragment(), NumberPicker.OnValueChangeListener{
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.action_gallery1 -> showColumnOption()
-            R.id.action_gallery2 -> Snackbar.make(view!!, "Gallery Option 2", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            R.id.action_gallery2 -> getNewImage()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -100,4 +110,55 @@ class GalleryFragment : Fragment(), NumberPicker.OnValueChangeListener{
 
     override fun onValueChange(p0: NumberPicker?, p1: Int, p2: Int) {}
 
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File = context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
+        return File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = this.absolutePath
+        }
+    }
+
+    private fun getNewImage() {
+        Log.d("newImage", ">>getNewImage")
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also{takePictureIntent ->
+            takePictureIntent.resolveActivity(context!!.packageManager)?.also{
+                val photoFile: File? = try{
+                    createImageFile()
+                } catch (e: IOException) {
+                    null
+                }
+                Log.d("newImage", photoFile.toString())
+                photoFile?.also{
+                    try{
+                        val photoURI: Uri = FileProvider.getUriForFile(
+                            context!!,
+                            "com.example.android.fileprovider",
+                            it
+                        )
+                        Log.d("newImage", photoURI.toString())
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                        Log.d("newImage", "successful")
+                    }catch(e: Exception) {
+                        Log.d("newImage", e.toString())
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(currentPhotoPath != null){
+            img_paths.add(0, currentPhotoPath!!)
+            adapter.notifyItemInserted(0)
+        }
+    }
 }

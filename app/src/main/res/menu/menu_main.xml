@@ -25,12 +25,12 @@
         android:visible="true">
         <item
             android:id="@+id/action_gallery1"
-            android:title="행 개수"
+            android:title="@string/option_gallery_1"
             app:showAsAction="never"/>
 
         <item
             android:id="@+id/action_gallery2"
-            android:title="갤러리2"
+            android:title="@string/option_gallery_2"
             app:showAsAction="never"/>
     </group>
 
