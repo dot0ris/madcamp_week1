@@ -2,6 +2,7 @@ package com.example.madcamp_week1.ui.main.gallery
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,16 +14,17 @@ import com.bumptech.glide.Glide
 import com.example.madcamp_week1.R
 import kotlin.coroutines.coroutineContext
 
-class GalleryViewAdapter(private val context : Context, private val imageList: List<Int>)
+class GalleryViewAdapter(private val context : Context, private val imageList: List<String>)
     : RecyclerView.Adapter<GalleryViewAdapter.Holder>() {
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val imageView : ImageView = itemView.findViewById<ImageView>(R.id.id_image)
 
-        fun bind(img_path : Int){
+        fun bind(img_path : String){
             Glide.with(context)
-                .load(img_path)
+                .load(Uri.parse("file:///android_asset/${img_path}"))
                 .override(400, 300)
+                .placeholder(R.drawable.image_load)
                 .into(imageView)
         }
     }

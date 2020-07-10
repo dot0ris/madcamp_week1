@@ -1,6 +1,9 @@
 package com.example.madcamp_week1
 
+import android.content.Context
+import android.content.res.AssetManager
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
@@ -9,8 +12,53 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.example.madcamp_week1.ui.main.SectionsPagerAdapter
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
+import java.lang.Exception
+import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
+
+    private fun writeImagesToStorage() {
+        Log.d("Gallery", ">> writeImagesToStorage")
+        val assetManager = assets
+//        if (File(filesDir.absolutePath + File.separator + "images").exists()){
+//            Log.d("Gallery", "images directory already exists")
+//            return
+//        }
+        val images = assetManager.list("images")
+        if (images != null) {
+            //Log.d("Gallery", "${imagePaths.get(1)}")
+            val dir = File(filesDir, "images")
+            dir.mkdirs()
+            for(image in images){
+                //Log.d("Gallery", "$image")
+                try{
+                    val srcFile = "images" + File.separator +"$image"
+                    val destFile = filesDir.toString() + File.separator + srcFile
+                    Log.d("Gallery", srcFile)
+                    Log.d("Gallery", destFile)
+                    val input = assetManager.open(srcFile)
+                    Log.d("Gallery", "in")
+                    val output = FileOutputStream(File(dir, image))
+                    Log.d("Gallery", "out")
+                    input.copyTo(output)
+
+                }catch(e: IOException){
+                    Log.d("Gallery", "IO Exception")
+                }catch(e: FileNotFoundException){
+                    Log.d("Gallery", "File Not Found Exception")
+                }catch(e: Exception){
+                    e.printStackTrace()
+                    exitProcess(0)
+                }
+            }
+        }
+
+        Log.d("Gallery", "<< writeImagesToStorage")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,5 +74,7 @@ class MainActivity : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
+
+        writeImagesToStorage()
     }
 }

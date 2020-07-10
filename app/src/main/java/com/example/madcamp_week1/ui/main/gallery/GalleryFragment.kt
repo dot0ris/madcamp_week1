@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -23,11 +24,10 @@ import java.io.OutputStream
 import java.util.*
 
 
-class GalleryFragment : Fragment() {
+class GalleryFragment : Fragment(){
     private lateinit var recyclerView : RecyclerView
     private lateinit var adapter : GalleryViewAdapter
-    private var list = mutableListOf<Int>()
-    private lateinit var listDir : List<String>
+    private lateinit var assets : MutableList<String>
     private var cnt = 1
 
     /*
@@ -49,12 +49,12 @@ class GalleryFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var file = context?.getDir("images", Context.MODE_PRIVATE)
-        for (i in 1..22){
-            val url = "drawable/image"+i.toString().padStart(2, '0')
-            list.add(resources.getIdentifier(url, "drawable", activity!!.packageName))
+        assets = mutableListOf<String>()
+        for(i in 1..22){
+            assets.add("images/image${i.toString().padStart(2, '0')}.jpg")
         }
-        //listDir = list.map{saveImage(it)}
+
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -62,9 +62,11 @@ class GalleryFragment : Fragment() {
         val recyclerView : RecyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.apply{
             layoutManager = GridLayoutManager(activity, 2)
-            adapter = GalleryViewAdapter(context, list)
+            adapter = GalleryViewAdapter(context, assets)
         }
         return view
     }
+
+
 
 }
