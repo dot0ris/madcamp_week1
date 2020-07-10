@@ -1,4 +1,4 @@
-package com.example.madcamp_week1.ui.main
+package com.example.madcamp_week1.ui.main.contact
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import com.example.madcamp_week1.R
+<<<<<<< Updated upstream
+=======
 import org.json.JSONObject
+>>>>>>> Stashed changes
 
 class ContactFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -17,6 +19,11 @@ class ContactFragment : Fragment() {
 
         return view
     }
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream:app/src/main/java/com/example/madcamp_week1/ui/main/ContactFragment.kt
+=======
+=======
+>>>>>>> Stashed changes
     fun jsonParsingExample() {
         val jsonString = """
             {
@@ -48,6 +55,11 @@ class ContactFragment : Fragment() {
             Log.d(TAG, "type($i): $type")
         }
     }
+<<<<<<< Updated upstream:app/src/main/java/com/example/madcamp_week1/ui/main/contact/ContactFragment.kt
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes:app/src/main/java/com/example/madcamp_week1/ui/main/contact/ContactFragment.kt
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes:app/src/main/java/com/example/madcamp_week1/ui/main/ContactFragment.kt
 }
-
-class Contact (var name: String, var number: String, var group: Int)
