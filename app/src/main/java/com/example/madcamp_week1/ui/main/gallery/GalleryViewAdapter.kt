@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.madcamp_week1.R
+import java.io.File
 import kotlin.coroutines.coroutineContext
 
 class GalleryViewAdapter(private val context : Context, private val imageList: List<String>)
@@ -22,7 +23,7 @@ class GalleryViewAdapter(private val context : Context, private val imageList: L
 
         fun bind(img_path : String){
             Glide.with(context)
-                .load(Uri.parse("file:///android_asset/${img_path}"))
+                .load(File(img_path))
                 .override(300, 200)
                 .placeholder(R.drawable.image_load)
                 .into(imageView)

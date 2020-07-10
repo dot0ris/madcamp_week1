@@ -26,7 +26,7 @@ import java.util.*
 class GalleryFragment : Fragment(){
     private lateinit var recyclerView : RecyclerView
     private lateinit var adapter : GalleryViewAdapter
-    private lateinit var assets : MutableList<String>
+    private lateinit var img_paths : MutableList<String>
     private var cnt = 1
 
     /*
@@ -49,11 +49,13 @@ class GalleryFragment : Fragment(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        assets = mutableListOf<String>()
-        for(i in 1..22){
-            assets.add("images/image${i.toString().padStart(2, '0')}.jpg")
-        }
+        img_paths = mutableListOf<String>()
 
+        val imgDir = File(context!!.filesDir, "gallery")
+        imgDir.list()?.forEach{
+            img_paths.add(imgDir.toString() + File.separator + it)
+            Log.d("ImgPath", img_paths[img_paths.size-1])
+        }
 
     }
 
@@ -62,7 +64,7 @@ class GalleryFragment : Fragment(){
         val recyclerView : RecyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.apply{
             layoutManager = GridLayoutManager(activity, 2)
-            adapter = GalleryViewAdapter(context, assets)
+            adapter = GalleryViewAdapter(context, img_paths)
         }
         return view
     }

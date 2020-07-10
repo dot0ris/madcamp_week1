@@ -25,22 +25,20 @@ class MainActivity : AppCompatActivity() {
 //            Log.d("Gallery", "images directory already exists")
 //            return
 //        }
-        val images = assetManager.list("images")
+        val images = assetManager.list("gallery")
         if (images != null) {
             //Log.d("Gallery", "${imagePaths.get(1)}")
-            val dir = File(filesDir, "images")
+            val dir = File(filesDir, "gallery")
             dir.mkdirs()
             for(image in images){
                 //Log.d("Gallery", "$image")
                 try{
-                    val srcFile = "images" + File.separator +"$image"
+                    val srcFile = "gallery" + File.separator +"$image"
                     val destFile = filesDir.toString() + File.separator + srcFile
                     Log.d("Gallery", srcFile)
                     Log.d("Gallery", destFile)
                     val input = assetManager.open(srcFile)
-                    Log.d("Gallery", "in")
                     val output = FileOutputStream(File(dir, image))
-                    Log.d("Gallery", "out")
                     input.copyTo(output)
 
                 }catch(e: IOException){
