@@ -1,5 +1,6 @@
 package com.example.madcamp_week1.ui.main.gallery
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.ContextWrapper
@@ -156,9 +157,10 @@ class GalleryFragment : Fragment(), NumberPicker.OnValueChangeListener{
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(currentPhotoPath != null){
+        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK && currentPhotoPath != null){
             img_paths.add(currentPhotoPath!!)
             adapter.notifyItemInserted(img_paths.size-1)
+            Log.d("ActivityResult","Added image from $currentPhotoPath")
         }
     }
 }

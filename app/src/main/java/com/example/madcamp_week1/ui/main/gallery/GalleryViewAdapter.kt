@@ -25,7 +25,7 @@ class GalleryViewAdapter(private val context : Context, private val imageList: L
             Glide.with(context)
                 .load(File(img_path))
                 .fitCenter()
-                .override(300, 200)
+                .override(300, 300)
                 .placeholder(R.drawable.image_load)
                 .into(imageView)
         }
