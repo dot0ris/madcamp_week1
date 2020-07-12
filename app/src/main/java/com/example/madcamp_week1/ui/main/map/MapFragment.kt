@@ -153,8 +153,7 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener, MapView.PO
     override fun onClick(view: View?) {
         when(view!!.id) {
             R.id.fab_location -> {
-                isTrackingMode = !isTrackingMode
-                if(isTrackingMode) mapView!!.setMapCenterPoint(currentMapPoint, true)
+                mapView!!.setMapCenterPoint(currentMapPoint, true)
             }
         }
 
