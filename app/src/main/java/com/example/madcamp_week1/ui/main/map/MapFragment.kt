@@ -1,18 +1,27 @@
 package com.example.madcamp_week1.ui.main.map
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.madcamp_week1.R
+import com.example.madcamp_week1.model.PlaceInfo
+import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapPoint.GeoCoordinate
 import net.daum.mf.map.api.MapView
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
+import java.lang.Exception
 import java.lang.String
+import java.nio.charset.Charset
+import java.util.*
 
-class MapFragment : Fragment(), MapView.CurrentLocationEventListener {
+class MapFragment : Fragment(), MapView.CurrentLocationEventListener, MapView.POIItemEventListener {
     private val TAG = "MapTAG"
 
     private lateinit var mapViewContainer : ViewGroup
@@ -21,6 +30,7 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener {
     private var isTrackingMode = true
     private var currentLng: Double? = null
     private var currentLat: Double? = null
+    private val toilets = mutableListOf<PlaceInfo>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_map, container, false)
@@ -35,6 +45,32 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener {
 
         mapView.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading
         mapView.setCurrentLocationEventListener(this)
+
+        parseCsv("csv/대전광역시_유성구_공중화장실_20200313.csv")
+        val toiletPOIs = toilets.map{x -> x.toMapPOIItem()}
+        mapView.addPOIItems(toiletPOIs.toTypedArray())
+    }
+
+    private fun parseCsv(srcFile: kotlin.String) {
+        val assetManager = context!!.assets
+        try{
+            val input = InputStreamReader(assetManager.open(srcFile), Charset.forName("euc-kr"))
+            val reader = BufferedReader(input)
+            reader.readLine()
+            var line: kotlin.String?
+            while (reader.readLine().also { line = it } != null) {
+                val args = line!!.split(",")
+                val placeName = args[1]
+                val x = args[18].toDouble()
+                val y = args[19].toDouble()
+                Log.d(TAG, "$placeName $x $y")
+                val place = PlaceInfo(placeName, x, y)
+                toilets.add(place)
+            }
+            Log.d(TAG, "finished")
+        }catch(e: Exception){
+            Log.d(TAG, e.toString())
+        }
     }
 
 
@@ -78,6 +114,25 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener {
         Log.i(TAG, "onCurrentLocationUpdateFailed")
     }
 
+    override fun onCalloutBalloonOfPOIItemTouched(p0: MapView?, p1: MapPOIItem?) {
+
+    }
+
+    override fun onCalloutBalloonOfPOIItemTouched(
+        p0: MapView?,
+        p1: MapPOIItem?,
+        p2: MapPOIItem.CalloutBalloonButtonType?
+    ) {
+
+    }
+
+    override fun onDraggablePOIItemMoved(p0: MapView?, p1: MapPOIItem?, p2: MapPoint?) {
+
+    }
+
+    override fun onPOIItemSelected(p0: MapView?, p1: MapPOIItem?) {
+
+    }
 
 
 }
