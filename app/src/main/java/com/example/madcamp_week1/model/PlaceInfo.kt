@@ -5,14 +5,17 @@ import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 
 class PlaceInfo (
-    private val placeName : String,
-    private val x: Double,
-    private val y: Double
+    val placeName : String,
+    val x: Double,
+    val y: Double,
+    val address: String,
+    val phone: String,
+    val hours: String
 ){
     fun toMapPOIItem() : MapPOIItem{
         val marker = MapPOIItem()
-        marker.itemName = placeName
         Log.d("TAG", placeName)
+        marker.itemName = placeName
         val mapPoint = MapPoint.mapPointWithGeoCoord(x, y)
         marker.mapPoint = mapPoint
         return marker

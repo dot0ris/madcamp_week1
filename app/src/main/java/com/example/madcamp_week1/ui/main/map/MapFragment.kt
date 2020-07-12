@@ -1,11 +1,13 @@
 package com.example.madcamp_week1.ui.main.map
 
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.madcamp_week1.R
 import com.example.madcamp_week1.model.PlaceInfo
@@ -14,12 +16,10 @@ import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapPoint.GeoCoordinate
 import net.daum.mf.map.api.MapView
 import java.io.BufferedReader
-import java.io.IOException
 import java.io.InputStreamReader
-import java.lang.Exception
 import java.lang.String
 import java.nio.charset.Charset
-import java.util.*
+
 
 class MapFragment : Fragment(), MapView.CurrentLocationEventListener, MapView.POIItemEventListener {
     private val TAG = "MapTAG"
@@ -31,6 +31,11 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener, MapView.PO
     private var currentLng: Double? = null
     private var currentLat: Double? = null
     private val toilets = mutableListOf<PlaceInfo>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        parseCsv("csv/대전광역시_유성구_공중화장실_20200313.csv")
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_map, container, false)
@@ -46,9 +51,9 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener, MapView.PO
         mapView.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading
         mapView.setCurrentLocationEventListener(this)
 
-        parseCsv("csv/대전광역시_유성구_공중화장실_20200313.csv")
         val toiletPOIs = toilets.map{x -> x.toMapPOIItem()}
         mapView.addPOIItems(toiletPOIs.toTypedArray())
+        mapView.setPOIItemEventListener(this)
     }
 
     private fun parseCsv(srcFile: kotlin.String) {
@@ -60,11 +65,14 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener, MapView.PO
             var line: kotlin.String?
             while (reader.readLine().also { line = it } != null) {
                 val args = line!!.split(",")
-                val placeName = args[1]
+                val name = args[1]
                 val x = args[18].toDouble()
                 val y = args[19].toDouble()
-                Log.d(TAG, "$placeName $x $y")
-                val place = PlaceInfo(placeName, x, y)
+                val address = args[3]
+                val phone = args[15]
+                val hours = args[16]
+                //Log.d(TAG, "$name $x $y")
+                val place = PlaceInfo(name, x, y, address, phone, hours)
                 toilets.add(place)
             }
             Log.d(TAG, "finished")
@@ -119,10 +127,13 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener, MapView.PO
     }
 
     override fun onCalloutBalloonOfPOIItemTouched(
-        p0: MapView?,
-        p1: MapPOIItem?,
-        p2: MapPOIItem.CalloutBalloonButtonType?
+        mapView: MapView?,
+        mapPOIItem: MapPOIItem?,
+        calloutBalloonButtonType: MapPOIItem.CalloutBalloonButtonType
     ) {
+        val lat: Double = mapPOIItem!!.mapPoint.mapPointGeoCoord.latitude
+        val lng: Double = mapPOIItem.mapPoint.mapPointGeoCoord.longitude
+        Toast.makeText(context, mapPOIItem.itemName, Toast.LENGTH_SHORT).show()
 
     }
 
@@ -130,7 +141,7 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener, MapView.PO
 
     }
 
-    override fun onPOIItemSelected(p0: MapView?, p1: MapPOIItem?) {
+    override fun onPOIItemSelected(mapView: MapView?, mapPOIItem: MapPOIItem?) {
 
     }
 
