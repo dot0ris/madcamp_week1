@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.madcamp_week1.R
 import com.example.madcamp_week1.model.PlaceInfo
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapPoint.GeoCoordinate
@@ -21,13 +22,14 @@ import java.lang.String
 import java.nio.charset.Charset
 
 
-class MapFragment : Fragment(), MapView.CurrentLocationEventListener, MapView.POIItemEventListener {
+class MapFragment : Fragment(), MapView.CurrentLocationEventListener, MapView.POIItemEventListener, View.OnClickListener {
     private val TAG = "MapTAG"
 
     private lateinit var mapViewContainer : ViewGroup
     private lateinit var mapView : MapView
+    private lateinit var fab : FloatingActionButton
     private lateinit var currentMapPoint : MapPoint
-    private var isTrackingMode = true
+    private var isTrackingMode = false
     private var currentLng: Double? = null
     private var currentLat: Double? = null
     private val toilets = mutableListOf<PlaceInfo>()
@@ -42,6 +44,7 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener, MapView.PO
         mapView = MapView(context)
         mapViewContainer = view.findViewById<ViewGroup>(R.id.map_view)
         mapViewContainer.addView(mapView)
+        fab = view.findViewById(R.id.fab_location)
         return view
     }
 
@@ -54,6 +57,8 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener, MapView.PO
         val toiletPOIs = toilets.map{x -> x.toMapPOIItem()}
         mapView.addPOIItems(toiletPOIs.toTypedArray())
         mapView.setPOIItemEventListener(this)
+
+        fab.setOnClickListener(this)
     }
 
     private fun parseCsv(srcFile: kotlin.String) {
@@ -142,6 +147,16 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener, MapView.PO
     }
 
     override fun onPOIItemSelected(mapView: MapView?, mapPOIItem: MapPOIItem?) {
+
+    }
+
+    override fun onClick(view: View?) {
+        when(view!!.id) {
+            R.id.fab_location -> {
+                isTrackingMode = !isTrackingMode
+                if(isTrackingMode) mapView!!.setMapCenterPoint(currentMapPoint, true)
+            }
+        }
 
     }
 
