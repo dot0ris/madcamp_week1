@@ -37,14 +37,10 @@
     <group android:id="@+id/menu_group_tab3"
         android:visible="true">
         <item
-            android:id="@+id/action_option1"
-            android:title="옵션1"
-            app:showAsAction="never"/>
-
-        <item
-            android:id="@+id/action_option2"
-            android:title="옵션2"
-            app:showAsAction="never"/>
+            android:id="@+id/action_choose_city"
+            android:title="동네 선택"
+            android:icon="@drawable/ic_baseline_location_city_24"
+            app:showAsAction="always"/>
     </group>
 
 </menu>

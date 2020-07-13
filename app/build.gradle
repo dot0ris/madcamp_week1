@@ -34,6 +34,14 @@ android {
             }
         }
     }
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'x86', 'x86_64', 'armeabi-v7a', 'armeabi'
+            universalApk false
+        }
+    }
 }
 
 dependencies {
@@ -48,5 +56,9 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation files('libs/libDaumMapAndroid.jar')
+    implementation("com.github.doyaaaaaken:kotlin-csv-jvm:0.10.4")
 }
+
+android.defaultConfig.vectorDrawables.useSupportLibrary = true

@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.example.madcamp_week1.R
 import com.example.madcamp_week1.ui.main.gallery.GalleryFragment
+import com.example.madcamp_week1.ui.main.map.MapFragment
 
 private val TAB_TITLES = arrayOf(
         R.string.tab_text_1,
@@ -29,7 +30,7 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager)
         return when(position) {
             0 -> ContactFragment()
             1 -> GalleryFragment()
-            2 -> ThirdFragment()
+            2 -> MapFragment()
             else -> Fragment()
         }
     }

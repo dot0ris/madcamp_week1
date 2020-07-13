@@ -2,33 +2,22 @@ package com.example.madcamp_week1.ui.main.gallery
 
 import android.app.Activity
 import android.app.Dialog
-import android.content.Context
-import android.content.ContextWrapper
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.*
-import android.widget.AdapterView
 import android.widget.Button
 import android.widget.NumberPicker
-import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.madcamp_week1.R
-import com.google.android.material.snackbar.Snackbar
 import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
-import java.io.OutputStream
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
@@ -93,7 +82,7 @@ class GalleryFragment : Fragment(), NumberPicker.OnValueChangeListener{
     private fun showColumnOption(){
         val d = Dialog(context!!)
         d.setTitle("NumberPicker")
-        d.setContentView(R.layout.dialog)
+        d.setContentView(R.layout.dialog_number)
         val b1 = d.findViewById<Button>(R.id.button1)
         val np = d.findViewById<NumberPicker>(R.id.numberPicker1)
         np.maxValue = 5; np.minValue = 1
