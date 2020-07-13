@@ -1,8 +1,10 @@
 package com.example.madcamp_week1.ui.main.map
 
+import android.Manifest
 import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +12,8 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.example.madcamp_week1.R
@@ -29,6 +33,7 @@ import java.nio.charset.Charset
 
 class MapFragment : Fragment(), MapView.CurrentLocationEventListener, MapView.POIItemEventListener, View.OnClickListener{
     private val TAG = "MapTAG"
+    private val MY_PERMISSIONS_REQUEST_PERMISSION = 1
     private lateinit var mapViewContainer : ViewGroup
     private lateinit var mapView : MapView
     private lateinit var fab : FloatingActionButton
@@ -58,7 +63,6 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener, MapView.PO
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mapView.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading
         mapView.setCurrentLocationEventListener(this)
 
         val toiletPOIs = getPOIItems("csv/${cityFileList[cityFileIndex]}")
@@ -165,8 +169,11 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener, MapView.PO
     override fun onClick(view: View?) {
         when(view!!.id) {
             R.id.fab_location -> {
-                if (currentMapPoint != null)
-                    mapView!!.setMapCenterPoint(currentMapPoint, true)
+                if (checkLocationPermission()) {
+                    mapView.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading
+                    if(currentMapPoint != null)
+                        mapView!!.setMapCenterPoint(currentMapPoint, true)
+                }
             }
         }
 
@@ -190,6 +197,48 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener, MapView.PO
             mapView.removeAllPOIItems()
             val toiletPOIs = getPOIItems("csv/${cityFileList[cityFileIndex]}")
             mapView.addPOIItems(toiletPOIs.toTypedArray())
+        }
+    }
+
+    private fun checkLocationPermission() : Boolean {
+        if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                MY_PERMISSIONS_REQUEST_PERMISSION
+            )
+            return false
+        }
+        return true
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            MY_PERMISSIONS_REQUEST_PERMISSION -> {
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    mapView.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading
+                    Log.d(TAG, "permission granted!")
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Log.d(TAG, "permission not granted")
+                }
+                return
+            }
+
+            // Add other 'when' lines to check for other
+            // permissions this app might request.
+            else -> {
+                // Ignore all other requests.
+                Log.d(TAG, "some other request")
+            }
         }
     }
 }
