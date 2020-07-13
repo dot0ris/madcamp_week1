@@ -22,6 +22,12 @@ import java.io.IOException
 import java.lang.Exception
 import kotlin.system.exitProcess
 
+val TAB_TITLES = arrayOf(
+    R.string.tab_text_1,
+    R.string.tab_text_2,
+    R.string.tab_text_3
+)
+
 class MainActivity : AppCompatActivity() {
     private val MY_PERMISSIONS_REQUEST_PERMISSION = 1
     private val TAG = "mainTAG"
@@ -66,14 +72,17 @@ class MainActivity : AppCompatActivity() {
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         val ab = supportActionBar!!
-        ab.setDisplayShowTitleEnabled(false)
+        ab.setDisplayShowTitleEnabled(true)
+        ab.setTitle(TAB_TITLES[0])
 
         val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
         val viewPager: ViewPager = findViewById(R.id.view_pager)
         viewPager.adapter = sectionsPagerAdapter
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
             override fun onPageScrollStateChanged(state: Int) {}
-            override fun onPageSelected(position: Int) {}
+            override fun onPageSelected(position: Int) {
+                ab.setTitle(TAB_TITLES[position])
+            }
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
                 invalidateOptionsMenu()
             }
