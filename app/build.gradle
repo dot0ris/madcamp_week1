@@ -58,6 +58,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation files('libs/libDaumMapAndroid.jar')
+    implementation("com.github.doyaaaaaken:kotlin-csv-jvm:0.10.4")
 }
 
 android.defaultConfig.vectorDrawables.useSupportLibrary = true

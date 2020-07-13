@@ -5,13 +5,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.madcamp_week1.R
 import com.example.madcamp_week1.model.PlaceInfo
+import com.example.madcamp_week1.utils.ChooseCityDialog
 import com.example.madcamp_week1.utils.PlaceInfoDialog
+import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
@@ -19,7 +22,6 @@ import net.daum.mf.map.api.MapPoint.GeoCoordinate
 import net.daum.mf.map.api.MapView
 import java.io.BufferedReader
 import java.io.InputStreamReader
-import java.lang.String
 import java.nio.charset.Charset
 
 
@@ -33,11 +35,13 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener, MapView.PO
     private var isTrackingMode = false
     private var currentLng: Double? = null
     private var currentLat: Double? = null
-    private val toilets = mutableListOf<PlaceInfo>()
+    private var cityFileIndex = 0
+    private lateinit var cityFileList : Array<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        parseCsv("csv/대전광역시_유성구_공중화장실_20200313.csv")
+        cityFileList = context?.assets?.list("csv") ?: throw Exception("City file not set")
+        Log.d(TAG, ">>> ${cityFileList[0]}")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -55,36 +59,40 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener, MapView.PO
         mapView.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading
         mapView.setCurrentLocationEventListener(this)
 
-        val toiletPOIs = toilets.map{x -> x.toMapPOIItem()}
+        val toiletPOIs = getPOIItems("csv/${cityFileList[cityFileIndex]}")
         mapView.addPOIItems(toiletPOIs.toTypedArray())
         mapView.setPOIItemEventListener(this)
 
         fab.setOnClickListener(this)
     }
 
-    private fun parseCsv(srcFile: kotlin.String) {
+    private fun getPOIItems(srcFile: kotlin.String) : List<MapPOIItem>{
+        val toilets = mutableListOf<PlaceInfo>()
         val assetManager = context!!.assets
         try{
-            val input = InputStreamReader(assetManager.open(srcFile), Charset.forName("euc-kr"))
-            val reader = BufferedReader(input)
-            reader.readLine()
-            var line: kotlin.String?
-            while (reader.readLine().also { line = it } != null) {
-                val args = line!!.split(",")
+            //val input = InputStreamReader(assetManager.open(srcFile), Charset.forName("euc-kr"))
+            //val reader = BufferedReader(input)
+            val tsvReader = csvReader{
+                charset = "euc-kr"
+            }
+            val data: List<List<String>> = tsvReader.readAll(assetManager.open(srcFile)).drop(1)
+            for (args in data) {
                 val name = args[1]
+                Log.d(TAG, "$name ${args[18]} ${args[19]}")
                 val x = args[18].toDouble()
                 val y = args[19].toDouble()
                 val address = args[3]
                 val phone = args[15]
                 val hours = args[16]
-                //Log.d(TAG, "$name $x $y")
                 val place = PlaceInfo(name, x, y, address, phone, hours)
                 toilets.add(place)
             }
             Log.d(TAG, "finished")
+            Log.d(TAG, "finished")
         }catch(e: Exception){
             Log.d(TAG, e.toString())
         }
+        return toilets.map{x -> x.toMapPOIItem()}
     }
 
 
@@ -162,5 +170,13 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener, MapView.PO
 
     }
 
-
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.action_choose_city -> {
+                val dialog = ChooseCityDialog(cityFileList, cityFileIndex)
+                dialog.show(fragmentManager!!, "chooseCity")
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 }
