@@ -36,7 +36,6 @@ import java.util.*
 
 class GalleryFragment : Fragment(), NumberPicker.OnValueChangeListener{
     private lateinit var recyclerView : RecyclerView
-    private lateinit var adapter : GalleryViewAdapter
     private lateinit var img_paths : MutableList<String>
     private var cnt = 1
     private var currentPhotoPath : String? = null
@@ -71,12 +70,11 @@ class GalleryFragment : Fragment(), NumberPicker.OnValueChangeListener{
             Log.d("ImgPath", img_paths[img_paths.size-1])
         }
 
-        adapter = GalleryViewAdapter(context!!, mutableListOf())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_gallery, container, false)
-        val recyclerView : RecyclerView = view.findViewById(R.id.recycler_view)
+        recyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.apply{
             layoutManager = GridLayoutManager(activity, 2)
             adapter = GalleryViewAdapter(context, img_paths)
@@ -158,7 +156,10 @@ class GalleryFragment : Fragment(), NumberPicker.OnValueChangeListener{
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK && currentPhotoPath != null){
+            val adapter = recyclerView.adapter
+            Log.d("TAG", adapter!!.itemCount.toString())
             img_paths.add(currentPhotoPath!!)
+            Log.d("TAG", adapter.itemCount.toString())
             adapter.notifyItemInserted(img_paths.size-1)
             Log.d("ActivityResult","Added image from $currentPhotoPath")
         }

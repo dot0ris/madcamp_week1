@@ -15,7 +15,7 @@ import com.example.madcamp_week1.R
 import java.io.File
 import kotlin.coroutines.coroutineContext
 
-class GalleryViewAdapter(private val context : Context, private val imageList: List<String>)
+class GalleryViewAdapter(private val context : Context, private val imageList: MutableList<String>)
     : RecyclerView.Adapter<GalleryViewAdapter.Holder>() {
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
