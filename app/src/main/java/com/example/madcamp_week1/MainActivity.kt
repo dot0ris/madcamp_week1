@@ -89,6 +89,9 @@ class MainActivity : AppCompatActivity() {
 
         val tabs: TabLayout = findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
+//        tabs.getTabAt(0)!!.setIcon(R.drawable.ic_baseline_settings_24)
+//        tabs.getTabAt(1)!!.setIcon(R.drawable.ic_baseline_settings_24)
+//        tabs.getTabAt(2)!!.setIcon(R.drawable.ic_baseline_settings_24)
 
         writeImagesToStorage()
     }
