@@ -154,5 +154,9 @@ class GalleryFragment : Fragment(), NumberPicker.OnValueChangeListener{
             adapter.notifyItemInserted(img_paths.size-1)
             Log.d("ActivityResult","Added image from $currentPhotoPath")
         }
+        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_CANCELED && currentPhotoPath != null){
+            File(currentPhotoPath).delete()
+            Log.d("ActivityResult","Removed image from $currentPhotoPath")
+        }
     }
 }
