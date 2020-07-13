@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.madcamp_week1.R
+import com.example.madcamp_week1.utils.SpacesItemDecoration
 import java.io.File
 import java.io.IOException
 import java.lang.Exception
@@ -68,6 +69,7 @@ class GalleryFragment : Fragment(), NumberPicker.OnValueChangeListener{
             layoutManager = GridLayoutManager(activity, 2)
             adapter = GalleryViewAdapter(context, img_paths)
         }
+        recyclerView.addItemDecoration(SpacesItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_width)))
         return view
     }
 
