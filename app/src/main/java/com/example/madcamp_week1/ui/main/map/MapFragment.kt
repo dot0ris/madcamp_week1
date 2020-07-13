@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.madcamp_week1.R
 import com.example.madcamp_week1.model.PlaceInfo
+import com.example.madcamp_week1.utils.PlaceInfoDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
@@ -28,7 +29,7 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener, MapView.PO
     private lateinit var mapViewContainer : ViewGroup
     private lateinit var mapView : MapView
     private lateinit var fab : FloatingActionButton
-    private lateinit var currentMapPoint : MapPoint
+    private var currentMapPoint : MapPoint? = null
     private var isTrackingMode = false
     private var currentLng: Double? = null
     private var currentLat: Double? = null
@@ -138,8 +139,9 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener, MapView.PO
     ) {
         val lat: Double = mapPOIItem!!.mapPoint.mapPointGeoCoord.latitude
         val lng: Double = mapPOIItem.mapPoint.mapPointGeoCoord.longitude
-        Toast.makeText(context, mapPOIItem.itemName, Toast.LENGTH_SHORT).show()
-
+        //Toast.makeText(context, mapPOIItem.itemName, Toast.LENGTH_SHORT).show()
+        val dialog = PlaceInfoDialog(mapPOIItem.userObject as PlaceInfo)
+        dialog.show(fragmentManager!!, "placeInfo")
     }
 
     override fun onDraggablePOIItemMoved(p0: MapView?, p1: MapPOIItem?, p2: MapPoint?) {
@@ -153,7 +155,8 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener, MapView.PO
     override fun onClick(view: View?) {
         when(view!!.id) {
             R.id.fab_location -> {
-                mapView!!.setMapCenterPoint(currentMapPoint, true)
+                if (currentMapPoint != null)
+                    mapView!!.setMapCenterPoint(currentMapPoint, true)
             }
         }
 

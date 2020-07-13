@@ -11,12 +11,12 @@ import android.widget.NumberPicker;
 public class NumberPickerDialog extends DialogFragment {
     private NumberPicker.OnValueChangeListener valueChangeListener;
 
-    String title;	//dialog 제목
-    String subtitle;	//dialog 부제목
+    String title;	//dialog_number 제목
+    String subtitle;	//dialog_number 부제목
     int minvalue;	//입력가능 최소값
     int maxvalue;	//입력가능 최대값
     int step;	//선택가능 값들의 간격
-    int defvalue;	//dialog 시작 숫자 (현재값)
+    int defvalue;	//dialog_number 시작 숫자 (현재값)
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

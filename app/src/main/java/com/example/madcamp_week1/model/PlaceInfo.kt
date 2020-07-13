@@ -18,6 +18,7 @@ class PlaceInfo (
         marker.itemName = placeName
         val mapPoint = MapPoint.mapPointWithGeoCoord(x, y)
         marker.mapPoint = mapPoint
+        marker.userObject = this
         return marker
     }
 }
