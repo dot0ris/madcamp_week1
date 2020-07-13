@@ -39,7 +39,8 @@
         <item
             android:id="@+id/action_choose_city"
             android:title="동네 선택"
-            app:showAsAction="never"/>
+            android:icon="@drawable/ic_baseline_location_city_24"
+            app:showAsAction="always"/>
     </group>
 
 </menu>

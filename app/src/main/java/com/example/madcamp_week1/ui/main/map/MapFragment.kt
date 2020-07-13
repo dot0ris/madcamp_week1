@@ -1,5 +1,6 @@
 package com.example.madcamp_week1.ui.main.map
 
+import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.example.madcamp_week1.R
 import com.example.madcamp_week1.model.PlaceInfo
@@ -25,9 +27,8 @@ import java.io.InputStreamReader
 import java.nio.charset.Charset
 
 
-class MapFragment : Fragment(), MapView.CurrentLocationEventListener, MapView.POIItemEventListener, View.OnClickListener {
+class MapFragment : Fragment(), MapView.CurrentLocationEventListener, MapView.POIItemEventListener, View.OnClickListener{
     private val TAG = "MapTAG"
-
     private lateinit var mapViewContainer : ViewGroup
     private lateinit var mapView : MapView
     private lateinit var fab : FloatingActionButton
@@ -35,13 +36,14 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener, MapView.PO
     private var isTrackingMode = false
     private var currentLng: Double? = null
     private var currentLat: Double? = null
-    private var cityFileIndex = 0
+    private var cityFileIndex = 1
     private lateinit var cityFileList : Array<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         cityFileList = context?.assets?.list("csv") ?: throw Exception("City file not set")
         Log.d(TAG, ">>> ${cityFileList[0]}")
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -174,9 +176,20 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener, MapView.PO
         when(item.itemId){
             R.id.action_choose_city -> {
                 val dialog = ChooseCityDialog(cityFileList, cityFileIndex)
-                dialog.show(fragmentManager!!, "chooseCity")
+                dialog.setTargetFragment(this, 123)
+                dialog.show(fragmentManager!!.beginTransaction(), "chooseCity")
+                Log.d(TAG, "selected action_choose_city")
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun onCityDialogResult(confirmed : Boolean, newIndex : Int) {
+        if (confirmed && newIndex != cityFileIndex) {
+            cityFileIndex = newIndex
+            mapView.removeAllPOIItems()
+            val toiletPOIs = getPOIItems("csv/${cityFileList[cityFileIndex]}")
+            mapView.addPOIItems(toiletPOIs.toTypedArray())
+        }
     }
 }
