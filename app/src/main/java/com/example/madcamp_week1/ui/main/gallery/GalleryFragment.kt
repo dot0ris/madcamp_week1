@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.madcamp_week1.R
+import com.example.madcamp_week1.utils.SpacesItemDecoration
 import java.io.File
 import java.io.IOException
 import java.lang.Exception
@@ -68,6 +69,7 @@ class GalleryFragment : Fragment(), NumberPicker.OnValueChangeListener{
             layoutManager = GridLayoutManager(activity, 2)
             adapter = GalleryViewAdapter(context, img_paths)
         }
+        recyclerView.addItemDecoration(SpacesItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_width)))
         return view
     }
 
@@ -151,6 +153,10 @@ class GalleryFragment : Fragment(), NumberPicker.OnValueChangeListener{
             Log.d("TAG", adapter.itemCount.toString())
             adapter.notifyItemInserted(img_paths.size-1)
             Log.d("ActivityResult","Added image from $currentPhotoPath")
+        }
+        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_CANCELED && currentPhotoPath != null){
+            File(currentPhotoPath).delete()
+            Log.d("ActivityResult","Removed image from $currentPhotoPath")
         }
     }
 }

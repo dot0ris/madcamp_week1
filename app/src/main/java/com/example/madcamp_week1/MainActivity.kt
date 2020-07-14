@@ -11,6 +11,12 @@ import android.util.Log
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
+import androidx.appcompat.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuItem
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import com.example.madcamp_week1.ui.main.SectionsPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import com.kakao.util.maps.helper.Utility
@@ -20,11 +26,21 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
+import java.lang.Exception
+import java.net.Authenticator
 import kotlin.system.exitProcess
 
-class MainActivity : AppCompatActivity() {
+val TAB_TITLES = arrayOf(
+    R.string.tab_text_1,
+    R.string.tab_text_2,
+    R.string.tab_text_3
+)
+
+class MainActivity : ThemeChangeActivity(true) {
     private val MY_PERMISSIONS_REQUEST_PERMISSION = 1
+    private val REQUEST_SETTING = 2
     private val TAG = "mainTAG"
+    private lateinit var curTheme: String
 
     private fun writeImagesToStorage() {
         Log.d("Gallery", ">> writeImagesToStorage")
@@ -66,14 +82,17 @@ class MainActivity : AppCompatActivity() {
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         val ab = supportActionBar!!
-        ab.setDisplayShowTitleEnabled(false)
+        ab.setDisplayShowTitleEnabled(true)
+        ab.setTitle(TAB_TITLES[0])
 
         val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
         val viewPager: ViewPager = findViewById(R.id.view_pager)
         viewPager.adapter = sectionsPagerAdapter
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
             override fun onPageScrollStateChanged(state: Int) {}
-            override fun onPageSelected(position: Int) {}
+            override fun onPageSelected(position: Int) {
+                ab.setTitle(TAB_TITLES[position])
+            }
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
                 invalidateOptionsMenu()
             }
@@ -84,24 +103,6 @@ class MainActivity : AppCompatActivity() {
         tabs.setupWithViewPager(viewPager)
 
         writeImagesToStorage()
-    }
-
-    fun getKeyHashBase64(context: Context?): String? {
-        val packageInfo: PackageInfo =
-            Utility.getPackageInfo(context, PackageManager.GET_SIGNATURES)
-                ?: return null
-        for (signature in packageInfo.signatures) {
-            try {
-                val md: MessageDigest = MessageDigest.getInstance("SHA")
-                md.update(signature.toByteArray())
-                return Base64.encodeToString(md.digest(), Base64.DEFAULT)
-            } catch (e: PackageManager.NameNotFoundException) {
-                e.printStackTrace()
-            } catch (e: NoSuchAlgorithmException) {
-                e.printStackTrace()
-            }
-        }
-        return null
     }
 
     // Adjust visibility of each options in menu_main
@@ -127,5 +128,28 @@ class MainActivity : AppCompatActivity() {
         }
 
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.action_settings -> {
+//                setTheme(R.style.AppTheme2)
+                val intent = Intent(this, SettingsActivity::class.java)
+                startActivityForResult(intent, REQUEST_SETTING)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(requestCode) {
+            REQUEST_SETTING -> {
+//                if( data.extras["hei"] != cur_theme)
+                Log.d("TAG", ">>Recreated")
+                this.recreate()
+            }
+        }
     }
 }
