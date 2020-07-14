@@ -59,6 +59,12 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation files('libs/libDaumMapAndroid.jar')
     implementation("com.github.doyaaaaaken:kotlin-csv-jvm:0.10.4")
+
+    def preference_version = "1.1.1"
+    // Java language implementation
+    implementation "androidx.preference:preference:$preference_version"
+    // Kotlin
+    implementation "androidx.preference:preference-ktx:$preference_version"
 }
 
 android.defaultConfig.vectorDrawables.useSupportLibrary = true
