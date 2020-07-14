@@ -48,12 +48,12 @@ class ContactViewAdapter(private val context: Context, val phonebookList: List<P
         //    view. title.text = item.title
         //    view.setOnClickListener(listener)
         //}
-        val id = v?.findViewById<TextView>(R.id.id)
+        //val id = v?.findViewById<TextView>(R.id.id)
         val name = v?.findViewById<TextView>(R.id.name)
         val number = v?.findViewById<TextView>(R.id.number)
 
         fun bind (phoneBook: PhoneBook) {
-            id?.text = phoneBook.id
+            //id?.text = phoneBook.id
             name?.text = phoneBook.name
             number?.text = phoneBook.number
         }

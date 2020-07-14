@@ -1,19 +1,25 @@
 package com.example.madcamp_week1
 
+import android.app.Activity
+import android.content.Context
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Environment
+import android.util.Base64
 import android.util.Log
+import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.example.madcamp_week1.ui.main.SectionsPagerAdapter
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
-import android.view.Menu
+import com.kakao.util.maps.helper.Utility
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
-import java.lang.Exception
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
@@ -78,6 +84,24 @@ class MainActivity : AppCompatActivity() {
         tabs.setupWithViewPager(viewPager)
 
         writeImagesToStorage()
+    }
+
+    fun getKeyHashBase64(context: Context?): String? {
+        val packageInfo: PackageInfo =
+            Utility.getPackageInfo(context, PackageManager.GET_SIGNATURES)
+                ?: return null
+        for (signature in packageInfo.signatures) {
+            try {
+                val md: MessageDigest = MessageDigest.getInstance("SHA")
+                md.update(signature.toByteArray())
+                return Base64.encodeToString(md.digest(), Base64.DEFAULT)
+            } catch (e: PackageManager.NameNotFoundException) {
+                e.printStackTrace()
+            } catch (e: NoSuchAlgorithmException) {
+                e.printStackTrace()
+            }
+        }
+        return null
     }
 
     // Adjust visibility of each options in menu_main
