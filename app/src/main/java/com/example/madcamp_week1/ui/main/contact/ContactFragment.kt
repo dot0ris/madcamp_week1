@@ -113,6 +113,7 @@ class ContactFragment : Fragment(), View.OnClickListener { //, LoaderManager.Loa
 //    }
 
     fun getContacts(): List<PhoneBook> {
+        Log.d(TAG, "getcontacts")
         // 권한 확인
 //        val permissionCheck = ContextCompat.checkSelfPermission(
 //            this.requireActivity(),
@@ -164,6 +165,8 @@ class ContactFragment : Fragment(), View.OnClickListener { //, LoaderManager.Loa
             }
             // 데이터 계열은 반드시 닫아줘야 한다.
             cursor!!.close()
+            if (datas != null) Log.d(TAG, )
+            else Log.d(TAG, "fin")
             return datas
     }
     override fun onClick(view: View?) {
