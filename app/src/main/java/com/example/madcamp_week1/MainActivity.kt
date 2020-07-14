@@ -1,33 +1,19 @@
 package com.example.madcamp_week1
 
-import android.app.Activity
-import android.content.Context
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
+import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
-import android.util.Base64
 import android.util.Log
 import android.view.Menu
-import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
-import androidx.appcompat.app.AppCompatActivity
-import android.view.Menu
 import android.view.MenuItem
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.preference.PreferenceManager
 import com.example.madcamp_week1.ui.main.SectionsPagerAdapter
 import com.google.android.material.tabs.TabLayout
-import com.kakao.util.maps.helper.Utility
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
 import java.lang.Exception
-import java.net.Authenticator
 import kotlin.system.exitProcess
 
 val TAB_TITLES = arrayOf(
