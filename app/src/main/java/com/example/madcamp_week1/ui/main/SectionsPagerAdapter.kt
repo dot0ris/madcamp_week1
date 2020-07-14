@@ -1,9 +1,11 @@
 package com.example.madcamp_week1.ui.main
 
 import android.content.Context
+import android.os.Build
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ImageSpan
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -38,8 +40,9 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager)
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun getPageTitle(position: Int): CharSequence? {
-        val image = context.resources.getDrawable(TAB_IMAGES[position])
+        val image = context.resources.getDrawable(TAB_IMAGES[position], null)
         image.setBounds(0, 0, image.intrinsicWidth, image.intrinsicHeight)
         val sb = SpannableString(" ")
         val imageSpan = ImageSpan(image, ImageSpan.ALIGN_BOTTOM)
