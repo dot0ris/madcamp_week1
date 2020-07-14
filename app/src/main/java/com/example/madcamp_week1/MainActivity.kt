@@ -15,12 +15,14 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import com.example.madcamp_week1.ui.main.SectionsPagerAdapter
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 import java.lang.Exception
+import java.net.Authenticator
 import kotlin.system.exitProcess
 
 val TAB_TITLES = arrayOf(
@@ -29,9 +31,11 @@ val TAB_TITLES = arrayOf(
     R.string.tab_text_3
 )
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ThemeChangeActivity(true) {
     private val MY_PERMISSIONS_REQUEST_PERMISSION = 1
+    private val REQUEST_SETTING = 2
     private val TAG = "mainTAG"
+    private lateinit var curTheme: String
 
     private fun writeImagesToStorage() {
         Log.d("Gallery", ">> writeImagesToStorage")
@@ -69,6 +73,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        Log.d("***", "onCreate")
 
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -127,38 +132,23 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.action_settings -> {
+//                setTheme(R.style.AppTheme2)
                 val intent = Intent(this, SettingsActivity::class.java)
-                startActivity(intent)
+                startActivityForResult(intent, REQUEST_SETTING)
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
 
-//    override fun onRequestPermissionsResult(
-//        requestCode: Int,
-//        permissions: Array<out String>,
-//        grantResults: IntArray
-//    ) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        when (requestCode) {
-//            MY_PERMISSIONS_REQUEST_PERMISSION -> {
-//                // If request is cancelled, the result arrays are empty.
-//                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-//                    // permission was granted, yay! Do the
-//                    // contacts-related task you need to do.
-//                } else {
-//                    // permission denied, boo! Disable the
-//                    // functionality that depends on this permission.
-//                }
-//                return
-//            }
-//
-//            // Add other 'when' lines to check for other
-//            // permissions this app might request.
-//            else -> {
-//                // Ignore all other requests.
-//            }
-//        }
-//    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(requestCode) {
+            REQUEST_SETTING -> {
+//                if( data.extras["hei"] != cur_theme)
+                Log.d("TAG", ">>Recreated")
+                this.recreate()
+            }
+        }
+    }
 }
