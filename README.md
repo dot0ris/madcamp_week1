@@ -1,20 +1,27 @@
-MADCAMP_week1
+Ssshiit!
 =============
-This is basic android app including tab structures, with [@imsj114](https://github.com/imsj114)
+This is a basic android app including tab structures, with [@imsj114](https://github.com/imsj114)
 
 Configure
 ---------
-There are 3 tabs in app, each has different roles.
+There are 3 tabs in app, and each have different roles.
 
 1. Contact list tab
 
 2. Image gallery tab
 
-3. ???
+3. Public toilet tab
 
+# Features
 
-## 1. Contact list tab
+## 1. Contact List
 
-## 2. Image gallery tab
+-  Get contacts informations from the phone.
 
-## 3. ???
+## 2. Image Gallery
+
+- 
+- Can take a picture and save it.
+
+## 3. Public Toilet Map
+
