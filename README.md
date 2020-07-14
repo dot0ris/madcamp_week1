@@ -2,19 +2,10 @@ Ssshiit!
 =============
 This is a basic android app including tab structures, with [@imsj114](https://github.com/imsj114)
 
-Configure
----------
-There are 3 tabs in app, and each have different roles.
 
-1. Contact list tab
+# 설명
 
-2. Image gallery tab
-
-3. Public toilet tab
-
-# Features
-
-## 1. Contact List
+## 1. 연락처 탭
 
 -  Get contacts informations from the phone.
 
