@@ -38,7 +38,8 @@ class MainActivity : ThemeChangeActivity(true) {
         val images = assetManager.list("gallery")
         if (images != null) {
             //Log.d("Gallery", "${imagePaths.get(1)}")
-            val dir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+            val dir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
+            if(dir.list()!!.isNotEmpty()) return
             for(image in images){
                 //Log.d("Gallery", "$image")
                 try{

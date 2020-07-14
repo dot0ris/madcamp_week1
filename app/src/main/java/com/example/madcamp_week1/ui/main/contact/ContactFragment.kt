@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.provider.ContactsContract
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
@@ -21,7 +22,7 @@ import com.example.madcamp_week1.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.*
 
-class ContactFragment : Fragment(), View.OnClickListener { //, LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener {
+class ContactFragment : Fragment() { //, LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener {
 
     private lateinit var recyclerView: RecyclerView
     //private lateinit var adapter: ContactViewAdapter
@@ -70,9 +71,9 @@ class ContactFragment : Fragment(), View.OnClickListener { //, LoaderManager.Loa
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         //return inflater.inflate(R.layout.fragment_contact, container, false)
+        setHasOptionsMenu(true)
         val view = inflater.inflate(R.layout.fragment_contact, container, false)
         recyclerView = view.findViewById(R.id.recycler_contact)
-        fab = view.findViewById(R.id.fab_contact)
         recyclerView.apply {
             adapter = ContactViewAdapter(context, mutableListOf())
             layoutManager = LinearLayoutManager(context)
@@ -84,14 +85,27 @@ class ContactFragment : Fragment(), View.OnClickListener { //, LoaderManager.Loa
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fab.setOnClickListener(this)
         Log.d(TAG, "fuck")
 //        recyclerView.apply {
 //            adapter = ContactViewAdapter(context, pBooksList)
 //            Log.d(TAG, "ssibal")
 //        }
     }
-
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.action_get_contact -> {
+                Log.d(TAG, "onclick call")
+                if (checkLocationPermission()) {
+                    pBooksList = getContacts()
+                    Log.d("TAG", "${pBooksList.size}")
+                    recyclerView.apply {
+                        adapter = ContactViewAdapter(context, pBooksList)
+                    }
+                }
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     //override fun onActivityCreated(savedInstanceState: Bundle?) {
     //    super.onActivityCreated(savedInstanceState)
@@ -167,21 +181,7 @@ class ContactFragment : Fragment(), View.OnClickListener { //, LoaderManager.Loa
             cursor!!.close()
             return datas
     }
-    override fun onClick(view: View?) {
-        Log.d(TAG, "onclick call")
-        when(view!!.id) {
-            R.id.fab_contact -> {
-                if (checkLocationPermission()) {
-                    pBooksList = getContacts()
-                    Log.d("TAG", "${pBooksList.size}")
-                    recyclerView.apply {
-                        adapter = ContactViewAdapter(context, pBooksList)
-                    }
-                }
-            }
-        }
 
-    }
     private fun checkLocationPermission() : Boolean {
         if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(

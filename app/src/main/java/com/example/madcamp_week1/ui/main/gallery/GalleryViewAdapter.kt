@@ -16,30 +16,30 @@ import com.example.madcamp_week1.R
 import java.io.File
 import kotlin.coroutines.coroutineContext
 
-class GalleryViewAdapter(private val context : Context, private val imageList: MutableList<String>)
+class GalleryViewAdapter(private val context : Context, private val imageList: MutableList<String>, val itemLongClick: (Int) -> Boolean)
     : RecyclerView.Adapter<GalleryViewAdapter.Holder>() {
 
-    inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class Holder(itemView: View, itemLongClick: (Int) -> Boolean) : RecyclerView.ViewHolder(itemView) {
         private val imageView : ImageView = itemView.findViewById<ImageView>(R.id.id_image)
 
-        fun bind(img_path : String){
+        fun bind(img_path : String, position : Int){
             Glide.with(context)
                 .load(File(img_path))
                 .fitCenter()
                 .override(300, 300)
                 .placeholder(R.drawable.image_load)
                 .into(imageView)
-
+            imageView.setOnLongClickListener{ itemLongClick(position) }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_image, parent, false)
-        return Holder(view)
+        return Holder(view, itemLongClick)
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(imageList[position])
+        holder.bind(imageList[position], position)
     }
 
     override fun getItemCount(): Int = imageList.size

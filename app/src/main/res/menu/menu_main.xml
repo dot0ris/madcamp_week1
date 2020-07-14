@@ -11,13 +11,8 @@
     <group android:id="@+id/menu_group_contact"
         android:visible="true">
         <item
-            android:id="@+id/action_contact1"
-            android:title="연락처1"
-            app:showAsAction="never"/>
-
-        <item
-            android:id="@+id/action_contact2"
-            android:title="연락처2"
+            android:id="@+id/action_get_contact"
+            android:title="연락처 불러오기"
             app:showAsAction="never"/>
     </group>
 

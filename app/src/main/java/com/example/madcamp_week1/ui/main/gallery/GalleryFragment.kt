@@ -11,12 +11,15 @@ import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.NumberPicker
+import android.widget.Toast
 import androidx.core.content.FileProvider
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.madcamp_week1.R
 import com.example.madcamp_week1.utils.SpacesItemDecoration
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.File
 import java.io.IOException
 import java.lang.Exception
@@ -67,7 +70,10 @@ class GalleryFragment : Fragment(), NumberPicker.OnValueChangeListener{
         recyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.apply{
             layoutManager = GridLayoutManager(activity, 2)
-            adapter = GalleryViewAdapter(context, img_paths)
+            adapter = GalleryViewAdapter(context, img_paths){
+                askRemove(it)
+                true
+            }
         }
         recyclerView.addItemDecoration(SpacesItemDecoration(resources.getDimensionPixelSize(R.dimen.spacing_width)))
         return view
@@ -82,7 +88,7 @@ class GalleryFragment : Fragment(), NumberPicker.OnValueChangeListener{
     }
 
     private fun showColumnOption(){
-        val d = Dialog(context!!)
+        val d = Dialog(requireContext())
         d.setTitle("NumberPicker")
         d.setContentView(R.layout.dialog_number)
         val b1 = d.findViewById<Button>(R.id.button1)
@@ -91,7 +97,7 @@ class GalleryFragment : Fragment(), NumberPicker.OnValueChangeListener{
         np.wrapSelectorWheel = false
         np.setOnValueChangedListener(this)
         b1.setOnClickListener(View.OnClickListener {
-            val recyclerView = view!!.findViewById<RecyclerView>(R.id.recycler_view)
+            val recyclerView = requireView().findViewById<RecyclerView>(R.id.recycler_view)
             recyclerView.layoutManager = GridLayoutManager(activity, np.value)
             d.dismiss()
         })
@@ -118,7 +124,7 @@ class GalleryFragment : Fragment(), NumberPicker.OnValueChangeListener{
     private fun getNewImage() {
         Log.d("newImage", ">>getNewImage")
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also{takePictureIntent ->
-            takePictureIntent.resolveActivity(context!!.packageManager)?.also{
+            takePictureIntent.resolveActivity(requireContext().packageManager)?.also{
                 val photoFile: File? = try{
                     createImageFile()
                 } catch (e: IOException) {
@@ -128,7 +134,7 @@ class GalleryFragment : Fragment(), NumberPicker.OnValueChangeListener{
                 photoFile?.also{
                     try{
                         val photoURI: Uri = FileProvider.getUriForFile(
-                            context!!,
+                            requireContext(),
                             "com.example.android.fileprovider",
                             it
                         )
@@ -158,5 +164,24 @@ class GalleryFragment : Fragment(), NumberPicker.OnValueChangeListener{
             File(currentPhotoPath).delete()
             Log.d("ActivityResult","Removed image from $currentPhotoPath")
         }
+    }
+
+    private fun askRemove(position : Int) {
+        val items = arrayOf("삭제")
+        MaterialAlertDialogBuilder(context, R.style.AlertDialogTheme)
+            .setItems(items) { dialog, which ->
+                // Respond to item chosen
+                when(which) {
+                    0 -> {
+                        val adapter = recyclerView.adapter!!
+                        val imgPath = img_paths[position]
+                        img_paths.removeAt(position)
+                        Log.d("TAG", adapter.itemCount.toString())
+                        adapter.notifyItemRemoved(position)
+                        File(imgPath).delete()
+                    }
+                }
+            }
+            .show()
     }
 }
