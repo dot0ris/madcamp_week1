@@ -3,9 +3,21 @@ package com.example.madcamp_week1
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+//import android.R
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import android.provider.ContactsContract
+import android.view.Menu
+import android.widget.ArrayAdapter
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.ViewPager
+import com.example.madcamp_week1.ui.main.SectionsPagerAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
@@ -82,9 +94,7 @@ class MainActivity : AppCompatActivity() {
 
         val tabs: TabLayout = findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
-//        tabs.getTabAt(0)!!.setIcon(R.drawable.ic_baseline_settings_24)
-//        tabs.getTabAt(1)!!.setIcon(R.drawable.ic_baseline_settings_24)
-//        tabs.getTabAt(2)!!.setIcon(R.drawable.ic_baseline_settings_24)
+        val fab: FloatingActionButton = findViewById(R.id.fab)
 
         writeImagesToStorage()
     }
@@ -113,32 +123,4 @@ class MainActivity : AppCompatActivity() {
 
         return super.onCreateOptionsMenu(menu)
     }
-
-
-//    override fun onRequestPermissionsResult(
-//        requestCode: Int,
-//        permissions: Array<out String>,
-//        grantResults: IntArray
-//    ) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        when (requestCode) {
-//            MY_PERMISSIONS_REQUEST_PERMISSION -> {
-//                // If request is cancelled, the result arrays are empty.
-//                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-//                    // permission was granted, yay! Do the
-//                    // contacts-related task you need to do.
-//                } else {
-//                    // permission denied, boo! Disable the
-//                    // functionality that depends on this permission.
-//                }
-//                return
-//            }
-//
-//            // Add other 'when' lines to check for other
-//            // permissions this app might request.
-//            else -> {
-//                // Ignore all other requests.
-//            }
-//        }
-//    }
 }
