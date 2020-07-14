@@ -37,7 +37,7 @@ class ContactViewAdapter(private val context: Context, val phonebookList: List<P
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
             ContactViewAdapter.ViewHolder {
         val inflatedView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.contact_item, parent, false)
+            .inflate(R.layout.item_contact, parent, false)
         return ViewHolder(inflatedView)
     }
 

@@ -160,6 +160,7 @@ class ContactFragment : Fragment(), View.OnClickListener { //, LoaderManager.Loa
                     phoneBook.id = id
                     phoneBook.name = name
                     phoneBook.number = number
+                    Log.d("TAG", "$id, $name, $number")
                     datas.add(phoneBook)
                 }
             }
@@ -175,6 +176,7 @@ class ContactFragment : Fragment(), View.OnClickListener { //, LoaderManager.Loa
             R.id.fab_contact -> {
                 if (checkLocationPermission()) {
                     pBooksList = getContacts()
+                    Log.d("TAG", "${pBooksList.size}")
                     recyclerView.apply {
                         adapter = ContactViewAdapter(context, pBooksList)
                     }
