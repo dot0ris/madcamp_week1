@@ -60,7 +60,7 @@ Ssshiit!
 
 - 다음 지도 api를 이용해 동네의 공중화장실 위치를 보여준다.
 
-    - 공중화장실 정보는 공공데이터포털(https://www.data.go.kr/index.do)에서 제공되는 csv 파일을 사용하고 있다. assets 디렉터리에 csv 파일 형태로 포함되어 있다.
+    - 공중화장실 정보는 공공데이터포털[(https://www.data.go.kr/index.do)](https://www.data.go.kr/index.do)에서 제공되는 csv 파일을 사용하고 있다. assets 디렉터리에 csv 파일 형태로 포함되어 있다.
 
 - 우측 하단의 위치추적 버튼을 누르면 GPS 정보를 바탕으로 현재 위치를 표시해준다.
 
